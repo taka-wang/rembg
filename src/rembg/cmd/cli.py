@@ -1,8 +1,9 @@
 import argparse
 import glob
-import imghdr
 import os
+import filetype
 from distutils.util import strtobool
+from tqdm import tqdm
 
 from ..bg import remove
 
@@ -89,8 +90,12 @@ def main():
             else:
                 full_paths += glob.glob(path + "/*")
 
-        for fi in files:
-            if imghdr.what(fi) is None:
+        for fi in tqdm(files):
+            fi_type = filetype.guess(fi)
+
+            if fi_type is None:
+                continue
+            elif fi_type.mime.find('image') < 0:
                 continue
 
             with open(fi, "rb") as input:
