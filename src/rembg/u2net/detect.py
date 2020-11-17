@@ -134,5 +134,6 @@ def predict(net, item):
         img = Image.fromarray(predict_np * 255).convert("RGB")
 
         del d1, d2, d3, d4, d5, d6, d7, pred, predict, predict_np, inputs_test, sample
-
+        # ref: https://stackoverflow.com/questions/55322434/how-to-clear-cuda-memory-in-pytorch
+        torch.cuda.empty_cache()
         return img
